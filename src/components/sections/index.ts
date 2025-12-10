@@ -1,0 +1,9 @@
+export { Navbar } from "./Navbar";
+export { Hero } from "./Hero";
+export { Partners } from "./Partners";
+export { Services } from "./Services";
+export { WhyChooseUs } from "./WhyChooseUs";
+export { Testimonials } from "./Testimonials";
+export { Process } from "./Process";
+export { Contact } from "./Contact";
+export { Footer } from "./Footer";
