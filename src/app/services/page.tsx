@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -229,10 +230,10 @@ export default function ServicesPage() {
                       className={`${colors.button} text-white px-8 py-6 text-lg font-semibold rounded-xl ${colors.shadow}`}
                       asChild
                     >
-                      <a href="#contact-cta">
+                      <Link href={`/assessment/${service.id}`}>
                         Get Started
                         <ArrowRight className="ml-2 w-5 h-5" />
-                      </a>
+                      </Link>
                     </Button>
                   </div>
 
