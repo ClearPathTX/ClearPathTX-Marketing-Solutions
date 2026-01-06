@@ -27,6 +27,13 @@ const demoSites = [
     url: "https://landscaper-demo-new.vercel.app/",
     category: "Home Services",
   },
+  {
+    title: "HVAC Experts",
+    description: "Professional HVAC company website with service scheduling, maintenance plans, and emergency repair options.",
+    image: "/demos/hvac-demo.jpg",
+    url: "https://clearpath-hvac.vercel.app/",
+    category: "Home Services",
+  },
 ];
 
 const containerVariants = {
@@ -81,7 +88,7 @@ export function DemoSites() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto"
         >
           {demoSites.map((site) => (
             <motion.div key={site.title} variants={itemVariants}>
