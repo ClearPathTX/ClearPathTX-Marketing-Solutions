@@ -1,13 +1,57 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
-import { Send, Mail, Phone, MapPin } from "lucide-react";
+import { Send, Mail, Phone, MapPin, Check, Loader2 } from "lucide-react";
 
 export function Contact() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setError("");
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit form");
+      }
+
+      setIsSubmitted(true);
+      setFormData({ name: "", email: "", phone: "", message: "" });
+    } catch {
+      setError("Something went wrong. Please try again or call us directly.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
   return (
     <section id="contact" className="section-padding relative overflow-hidden">
       {/* Background */}
@@ -46,61 +90,114 @@ export function Contact() {
           >
             <Card className="bg-surface border-white/5">
               <CardContent className="p-6 md:p-8">
-                <form className="space-y-6">
-                  <div className="grid sm:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-2">
-                        Full Name
-                      </label>
-                      <Input
-                        type="text"
-                        placeholder="John Doe"
-                        className="bg-surface-light border-white/10 text-white placeholder:text-gray-500 focus:border-cyan/50 focus:ring-cyan/20"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-2">
-                        Email Address
-                      </label>
-                      <Input
-                        type="email"
-                        placeholder="john@company.com"
-                        className="bg-surface-light border-white/10 text-white placeholder:text-gray-500 focus:border-cyan/50 focus:ring-cyan/20"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
-                      Phone Number
-                    </label>
-                    <Input
-                      type="tel"
-                      placeholder="(555) 123-4567"
-                      className="bg-surface-light border-white/10 text-white placeholder:text-gray-500 focus:border-cyan/50 focus:ring-cyan/20"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
-                      How can we help?
-                    </label>
-                    <Textarea
-                      placeholder="Tell us about your project, goals, or any questions you have..."
-                      rows={5}
-                      className="bg-surface-light border-white/10 text-white placeholder:text-gray-500 focus:border-cyan/50 focus:ring-cyan/20 resize-none"
-                    />
-                  </div>
-
-                  <Button
-                    type="submit"
-                    size="lg"
-                    className="w-full bg-primary-blue hover:bg-primary-blue/90 text-white py-6 text-lg font-semibold rounded-xl shadow-glow-blue btn-glow group"
+                {isSubmitted ? (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="text-center py-12"
                   >
-                    Send Message
-                    <Send className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </form>
+                    <div className="w-16 h-16 rounded-full bg-cyan/10 flex items-center justify-center mx-auto mb-4">
+                      <Check className="w-8 h-8 text-cyan" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-white mb-2">
+                      Message Sent!
+                    </h3>
+                    <p className="text-gray-400 mb-6">
+                      We&apos;ll get back to you within 24 hours.
+                    </p>
+                    <Button
+                      onClick={() => setIsSubmitted(false)}
+                      variant="outline"
+                      className="border-cyan/30 text-cyan hover:bg-cyan/10"
+                    >
+                      Send Another Message
+                    </Button>
+                  </motion.div>
+                ) : (
+                  <form onSubmit={handleSubmit} className="space-y-6">
+                    <div className="grid sm:grid-cols-2 gap-6">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                          Full Name <span className="text-red-400">*</span>
+                        </label>
+                        <Input
+                          type="text"
+                          name="name"
+                          value={formData.name}
+                          onChange={handleChange}
+                          placeholder="John Doe"
+                          required
+                          className="bg-surface-light border-white/10 text-white placeholder:text-gray-500 focus:border-cyan/50 focus:ring-cyan/20"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                          Email Address <span className="text-red-400">*</span>
+                        </label>
+                        <Input
+                          type="email"
+                          name="email"
+                          value={formData.email}
+                          onChange={handleChange}
+                          placeholder="john@company.com"
+                          required
+                          className="bg-surface-light border-white/10 text-white placeholder:text-gray-500 focus:border-cyan/50 focus:ring-cyan/20"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        Phone Number
+                      </label>
+                      <Input
+                        type="tel"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleChange}
+                        placeholder="(555) 123-4567"
+                        className="bg-surface-light border-white/10 text-white placeholder:text-gray-500 focus:border-cyan/50 focus:ring-cyan/20"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        How can we help?
+                      </label>
+                      <Textarea
+                        name="message"
+                        value={formData.message}
+                        onChange={handleChange}
+                        placeholder="Tell us about your project, goals, or any questions you have..."
+                        rows={5}
+                        className="bg-surface-light border-white/10 text-white placeholder:text-gray-500 focus:border-cyan/50 focus:ring-cyan/20 resize-none"
+                      />
+                    </div>
+
+                    {error && (
+                      <p className="text-red-400 text-sm">{error}</p>
+                    )}
+
+                    <Button
+                      type="submit"
+                      size="lg"
+                      disabled={isSubmitting}
+                      className="w-full bg-primary-blue hover:bg-primary-blue/90 text-white py-6 text-lg font-semibold rounded-xl shadow-glow-blue btn-glow group disabled:opacity-50"
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="mr-2 w-5 h-5 animate-spin" />
+                          Sending...
+                        </>
+                      ) : (
+                        <>
+                          Send Message
+                          <Send className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                        </>
+                      )}
+                    </Button>
+                  </form>
+                )}
               </CardContent>
             </Card>
           </motion.div>
@@ -114,29 +211,33 @@ export function Contact() {
             className="lg:col-span-2 space-y-6"
           >
             {/* Info Cards */}
-            <Card className="bg-surface border-white/5 hover:border-cyan/20 transition-all duration-300">
-              <CardContent className="p-6 flex items-start gap-4">
-                <div className="w-12 h-12 rounded-xl bg-cyan/10 flex items-center justify-center flex-shrink-0">
-                  <Mail className="w-6 h-6 text-cyan" />
-                </div>
-                <div>
-                  <h3 className="text-white font-semibold mb-1">Email Us</h3>
-                  <p className="text-gray-400">hello@clearpathmarketing.com</p>
-                </div>
-              </CardContent>
-            </Card>
+            <a href="mailto:hello@clearpathmarketing.com">
+              <Card className="bg-surface border-white/5 hover:border-cyan/20 transition-all duration-300 cursor-pointer">
+                <CardContent className="p-6 flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-cyan/10 flex items-center justify-center flex-shrink-0">
+                    <Mail className="w-6 h-6 text-cyan" />
+                  </div>
+                  <div>
+                    <h3 className="text-white font-semibold mb-1">Email Us</h3>
+                    <p className="text-gray-400">hello@clearpathmarketing.com</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </a>
 
-            <Card className="bg-surface border-white/5 hover:border-cyan/20 transition-all duration-300">
-              <CardContent className="p-6 flex items-start gap-4">
-                <div className="w-12 h-12 rounded-xl bg-primary-blue/10 flex items-center justify-center flex-shrink-0">
-                  <Phone className="w-6 h-6 text-primary-blue" />
-                </div>
-                <div>
-                  <h3 className="text-white font-semibold mb-1">Call Us</h3>
-                  <p className="text-gray-400">(555) 123-4567</p>
-                </div>
-              </CardContent>
-            </Card>
+            <a href="tel:5551234567">
+              <Card className="bg-surface border-white/5 hover:border-cyan/20 transition-all duration-300 cursor-pointer">
+                <CardContent className="p-6 flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-primary-blue/10 flex items-center justify-center flex-shrink-0">
+                    <Phone className="w-6 h-6 text-primary-blue" />
+                  </div>
+                  <div>
+                    <h3 className="text-white font-semibold mb-1">Call Us</h3>
+                    <p className="text-gray-400">(555) 123-4567</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </a>
 
             <Card className="bg-surface border-white/5 hover:border-cyan/20 transition-all duration-300">
               <CardContent className="p-6 flex items-start gap-4">

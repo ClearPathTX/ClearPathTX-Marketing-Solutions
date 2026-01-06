@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
@@ -71,16 +72,20 @@ export function Hero() {
             <Button
               size="lg"
               className="bg-primary-blue hover:bg-primary-blue/90 text-white px-8 py-6 text-lg font-semibold rounded-xl shadow-glow-blue btn-glow group"
+              asChild
             >
-              Get a Free Consultation
-              <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              <Link href="/assessment">
+                Get a Free Consultation
+                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </Link>
             </Button>
             <Button
               size="lg"
               variant="outline"
               className="border-cyan/30 text-cyan hover:bg-cyan/10 px-8 py-6 text-lg font-semibold rounded-xl"
+              asChild
             >
-              See Our Services
+              <Link href="/services">See Our Services</Link>
             </Button>
           </motion.div>
         </motion.div>
@@ -103,21 +108,6 @@ export function Hero() {
         />
       </div>
 
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1, duration: 0.6 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2"
-      >
-        <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
-          className="w-6 h-10 rounded-full border-2 border-gray-500 flex items-start justify-center p-2"
-        >
-          <motion.div className="w-1 h-2 bg-gray-500 rounded-full" />
-        </motion.div>
-      </motion.div>
     </section>
   );
 }

@@ -6,4 +6,5 @@ export { WhyChooseUs } from "./WhyChooseUs";
 export { Testimonials } from "./Testimonials";
 export { Process } from "./Process";
 export { Contact } from "./Contact";
+export { DemoSites } from "./DemoSites";
 export { Footer } from "./Footer";

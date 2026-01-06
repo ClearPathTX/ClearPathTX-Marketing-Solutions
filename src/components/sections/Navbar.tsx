@@ -2,13 +2,16 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 
 const navLinks = [
-  { href: "#services", label: "Services" },
-  { href: "#contact", label: "Contact" },
+  { href: "/services", label: "Services" },
+  { href: "/pricing", label: "Pricing" },
+  { href: "/assessment", label: "Free Assessment" },
+  { href: "/#contact", label: "Contact" },
 ];
 
 export function Navbar() {
@@ -38,7 +41,7 @@ export function Navbar() {
         <div className="container-padding max-w-7xl mx-auto">
           <div className="flex items-center justify-between h-16 md:h-20">
             {/* Logo */}
-            <a href="#" className="flex items-center gap-3">
+            <Link href="/" className="flex items-center gap-3">
               <Image
                 src="/logo.png"
                 alt="ClearPath Logo"
@@ -49,24 +52,25 @@ export function Navbar() {
               <span className="text-white font-semibold text-xl hidden sm:block">
                 ClearPath Marketing Solutions
               </span>
-            </a>
+            </Link>
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-8">
               {navLinks.map((link) => (
-                <a
+                <Link
                   key={link.href}
                   href={link.href}
                   className="text-gray-300 hover:text-cyan transition-colors font-medium"
                 >
                   {link.label}
-                </a>
+                </Link>
               ))}
               <Button
                 size="sm"
                 className="bg-primary-blue hover:bg-primary-blue/90 text-white px-6 rounded-lg shadow-glow-blue"
+                asChild
               >
-                Get Started
+                <Link href="/assessment">Get Started</Link>
               </Button>
             </div>
 
@@ -98,20 +102,21 @@ export function Navbar() {
             <div className="glass-strong mx-4 rounded-2xl p-6 border border-white/10">
               <div className="flex flex-col gap-4">
                 {navLinks.map((link) => (
-                  <a
+                  <Link
                     key={link.href}
                     href={link.href}
                     onClick={() => setIsMobileMenuOpen(false)}
                     className="text-gray-300 hover:text-cyan transition-colors font-medium py-2"
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 ))}
                 <Button
                   className="bg-primary-blue hover:bg-primary-blue/90 text-white w-full mt-2 rounded-lg"
                   onClick={() => setIsMobileMenuOpen(false)}
+                  asChild
                 >
-                  Get Started
+                  <Link href="/assessment">Get Started</Link>
                 </Button>
               </div>
             </div>

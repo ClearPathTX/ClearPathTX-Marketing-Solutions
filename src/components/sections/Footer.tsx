@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
 
 export function Footer() {
@@ -40,30 +41,30 @@ export function Footer() {
             transition={{ delay: 0.1 }}
             className="flex items-center gap-6 text-sm"
           >
-            <a
-              href="#services"
+            <Link
+              href="/services"
               className="text-gray-400 hover:text-cyan transition-colors"
             >
               Services
-            </a>
-            <a
-              href="#contact"
+            </Link>
+            <Link
+              href="/pricing"
+              className="text-gray-400 hover:text-cyan transition-colors"
+            >
+              Pricing
+            </Link>
+            <Link
+              href="/assessment"
+              className="text-gray-400 hover:text-cyan transition-colors"
+            >
+              Free Assessment
+            </Link>
+            <Link
+              href="/#contact"
               className="text-gray-400 hover:text-cyan transition-colors"
             >
               Contact
-            </a>
-            <a
-              href="#"
-              className="text-gray-400 hover:text-cyan transition-colors"
-            >
-              Privacy Policy
-            </a>
-            <a
-              href="#"
-              className="text-gray-400 hover:text-cyan transition-colors"
-            >
-              Terms
-            </a>
+            </Link>
           </motion.div>
 
           {/* Copyright */}

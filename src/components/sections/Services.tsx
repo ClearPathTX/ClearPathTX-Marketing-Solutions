@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -17,36 +18,42 @@ const services = [
     title: "Call Center Solutions",
     description: "Real-Time Insurance Verification, Professional Lead Pre-Screening, Advanced Call Tracking & Attribution, Full-Cycle Call Funnel Management",
     color: "cyan",
+    href: "/assessment/call-center",
   },
   {
     icon: TrendingUp,
     title: "Digital Marketing",
     description: "Google Ads, Bing Ads, Social Media Marketing, Native Advertising — we turn clicks into customers with high-performing ad campaigns.",
     color: "blue",
+    href: "/assessment/digital-marketing",
   },
   {
     icon: Globe,
     title: "Web Design",
     description: "Responsive, conversion-optimized websites that look stunning and drive results. Built for speed and user experience.",
     color: "green",
+    href: "/assessment/web-design",
   },
   {
     icon: Search,
     title: "SEO Services",
     description: "Organic growth through comprehensive on-page & off-page SEO strategies. Dominate search rankings and drive qualified traffic.",
     color: "cyan",
+    href: "/assessment/seo",
   },
   {
     icon: Server,
     title: "Web Hosting",
     description: "Reliable, secure hosting with full maintenance and 99.9% uptime guarantee. Your site stays fast and protected 24/7.",
     color: "blue",
+    href: "/assessment/hosting",
   },
   {
     icon: Brain,
     title: "AI Marketing Solutions",
     description: "Content Generation, Customized LLM Integration, Predictive Analytics — harness the power of AI to supercharge your marketing.",
     color: "green",
+    href: "/assessment/ai-marketing",
   },
 ];
 
@@ -126,23 +133,28 @@ export function Services() {
             const colors = colorClasses[service.color as keyof typeof colorClasses];
             return (
               <motion.div key={service.title} variants={itemVariants}>
-                <Card
-                  className={`group bg-surface border-white/5 hover:bg-surface-light transition-all duration-300 h-full ${colors.border} ${colors.shadow}`}
-                >
-                  <CardContent className="p-6">
-                    <div
-                      className={`w-14 h-14 rounded-xl ${colors.bg} flex items-center justify-center mb-5`}
-                    >
-                      <service.icon className={`w-7 h-7 ${colors.icon}`} />
-                    </div>
-                    <h3 className="text-xl font-semibold text-white mb-3">
-                      {service.title}
-                    </h3>
-                    <p className="text-gray-400 leading-relaxed">
-                      {service.description}
-                    </p>
-                  </CardContent>
-                </Card>
+                <Link href={service.href}>
+                  <Card
+                    className={`group bg-surface border-white/5 hover:bg-surface-light transition-all duration-300 h-full cursor-pointer ${colors.border} ${colors.shadow}`}
+                  >
+                    <CardContent className="p-6">
+                      <div
+                        className={`w-14 h-14 rounded-xl ${colors.bg} flex items-center justify-center mb-5`}
+                      >
+                        <service.icon className={`w-7 h-7 ${colors.icon}`} />
+                      </div>
+                      <h3 className="text-xl font-semibold text-white mb-3 group-hover:text-cyan transition-colors">
+                        {service.title}
+                      </h3>
+                      <p className="text-gray-400 leading-relaxed">
+                        {service.description}
+                      </p>
+                      <p className={`mt-4 text-sm font-medium ${colors.icon} opacity-0 group-hover:opacity-100 transition-opacity`}>
+                        Take Free Assessment →
+                      </p>
+                    </CardContent>
+                  </Card>
+                </Link>
               </motion.div>
             );
           })}

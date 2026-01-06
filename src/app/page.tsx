@@ -6,6 +6,7 @@ import {
   WhyChooseUs,
   Testimonials,
   Process,
+  DemoSites,
   Contact,
   Footer,
 } from "@/components/sections";
@@ -20,6 +21,7 @@ export default function Home() {
       <WhyChooseUs />
       <Testimonials />
       <Process />
+      <DemoSites />
       <Contact />
       <Footer />
     </main>
