@@ -20,6 +20,13 @@ const demoSites = [
     url: "https://electric-experts.vercel.app/",
     category: "Home Services",
   },
+  {
+    title: "Landscaper Pro",
+    description: "Beautiful landscaping company website featuring portfolio galleries, service packages, and quote requests.",
+    image: "/demos/landscaper-demo.jpg",
+    url: "https://landscaper-demo-new.vercel.app/",
+    category: "Home Services",
+  },
 ];
 
 const containerVariants = {
