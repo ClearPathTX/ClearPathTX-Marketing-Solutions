@@ -14,10 +14,16 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Extract key fields from answers for easier querying
+    const businessName = answers["business-name"] || null;
+    const businessIndustry = answers["business-industry"] || null;
+    const budget = answers["budget"] || null;
+    const timeline = answers["timeline"] || null;
+
     // Insert into database
     const result = await query(
-      `INSERT INTO assessments (service_type, answers, contact_name, contact_email, contact_phone, contact_company, notes)
-       VALUES ($1, $2, $3, $4, $5, $6, $7)
+      `INSERT INTO assessments (service_type, answers, contact_name, contact_email, contact_phone, contact_company, business_name, business_industry, budget, timeline, notes)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
        RETURNING id, created_at`,
       [
         serviceType,
@@ -26,6 +32,10 @@ export async function POST(request: NextRequest) {
         contactInfo.email,
         contactInfo.phone || null,
         contactInfo.company || null,
+        businessName,
+        businessIndustry,
+        budget,
+        timeline,
         contactInfo.notes || null,
       ]
     );

@@ -50,14 +50,28 @@ export async function initDatabase() {
       contact_email VARCHAR(255) NOT NULL,
       contact_phone VARCHAR(50),
       contact_company VARCHAR(255),
+      business_name VARCHAR(255),
+      business_industry VARCHAR(255),
+      budget VARCHAR(100),
+      timeline VARCHAR(100),
+      status VARCHAR(50) DEFAULT 'new',
       notes TEXT,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
+  `;
+
+  // Create index on commonly queried fields
+  const createAssessmentIndexes = `
+    CREATE INDEX IF NOT EXISTS idx_assessments_status ON assessments(status);
+    CREATE INDEX IF NOT EXISTS idx_assessments_service_type ON assessments(service_type);
+    CREATE INDEX IF NOT EXISTS idx_assessments_created_at ON assessments(created_at DESC);
   `;
 
   try {
     await query(createContactsTable);
     await query(createAssessmentsTable);
+    await query(createAssessmentIndexes);
     console.log("Database tables initialized successfully");
   } catch (error) {
     console.error("Error initializing database:", error);
